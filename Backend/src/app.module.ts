@@ -43,6 +43,7 @@ import { LiquidityMiningModule } from './liquidity-mining/liquidity-mining.modul
 import { MonitoringModule } from './monitoring/monitoring.module';
 import { GraphqlModule } from './graphql/graphql.module';
 import { ObjectStorageModule } from './object-storage/object-storage.module';
+import { ZkModule } from './zk/zk.module';
 import { FailoverModule } from './failover/failover.module';
 import { CostMonitoringModule } from './cost-monitoring/cost-monitoring.module';
 import { DataResidencyModule } from './data-residency/data-residency.module';
@@ -111,6 +112,7 @@ import { SecretsManagementModule } from './secrets-management/secrets-management
     MonitoringModule,
     GraphqlModule,
     ObjectStorageModule,
+    ZkModule,
     FailoverModule,
     CostMonitoringModule,
     DataResidencyModule,

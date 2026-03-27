@@ -14,16 +14,62 @@ export interface UploadOptions {
   acl?: 'private' | 'public-read';
 }
 
-export interface ObjectStorageConfig {
-  provider: 'aws' | 'azure' | 'gcp';
+export interface BaseObjectStorageConfig {
+  provider: 'aws' | 'azure' | 'gcp' | 'ipfs' | 'arweave';
+  bucket?: string;
+}
+
+export interface AwsStorageConfig extends BaseObjectStorageConfig {
+  provider: 'aws';
   region?: string;
-  bucket: string;
   credentials: {
     accessKeyId?: string;
     secretAccessKey?: string;
+  };
+}
+
+export interface AzureStorageConfig extends BaseObjectStorageConfig {
+  provider: 'azure';
+  credentials: {
     accountName?: string;
     accountKey?: string;
+  };
+}
+
+export interface GcpStorageConfig extends BaseObjectStorageConfig {
+  provider: 'gcp';
+  credentials: {
     projectId?: string;
     serviceAccountKey?: string;
   };
 }
+
+export interface IpfsStorageConfig extends BaseObjectStorageConfig {
+  provider: 'ipfs';
+  host?: string;
+  port?: number;
+  protocol?: 'https' | 'http';
+  auth?: {
+    projectId?: string;
+    projectSecret?: string;
+    apiKey?: string;
+    apiSecret?: string;
+  };
+  gatewayUrl?: string;
+}
+
+export interface ArweaveStorageConfig extends BaseObjectStorageConfig {
+  provider: 'arweave';
+  host?: string;
+  port?: number;
+  protocol?: 'https' | 'http';
+  gatewayUrl?: string;
+  walletJson?: string;
+}
+
+export type ObjectStorageConfig =
+  | AwsStorageConfig
+  | AzureStorageConfig
+  | GcpStorageConfig
+  | IpfsStorageConfig
+  | ArweaveStorageConfig;

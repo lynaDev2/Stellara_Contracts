@@ -375,6 +375,9 @@ model NotificationSetting {
   notifyContributions Boolean  @default(true) @map("notify_contributions")
   notifyMilestones    Boolean  @default(true) @map("notify_milestones")
   notifyDeadlines     Boolean  @default(true) @map("notify_deadlines")
+  channelPreferences  Json?    @map("channel_preferences")
+  dailyLimit          Int      @default(5) @map("daily_limit")
+  unsubscribeToken    String?  @map("unsubscribe_token")
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
 
@@ -382,16 +385,22 @@ model NotificationSetting {
 }
 
 model Notification {
-  id         String                 @id @default(cuid())
-  userId     String                 @map("user_id")
-  user       User                   @relation(fields: [userId], references: [id])
-  type       NotificationType
-  title      String
-  message    String
-  read       Boolean                @default(false)
-  data       Json? // Optional metadata (e.g., projectId)
-  createdAt  DateTime               @default(now()) @map("created_at")
-  deliveries NotificationDelivery[]
+  id          String                 @id @default(cuid())
+  userId      String                 @map("user_id")
+  user        User                   @relation(fields: [userId], references: [id])
+  type        NotificationType
+  title       String
+  message     String
+  read        Boolean                @default(false)
+  data        Json? // Optional metadata (e.g., projectId)
+  status      NotificationStatus     @default(SENT)
+  scheduledAt DateTime?              @map("scheduled_at")
+  variant     String?
+  critical    Boolean                @default(false)
+  openCount   Int                    @default(0) @map("open_count")
+  clickCount  Int                    @default(0) @map("click_count")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  deliveries  NotificationDelivery[]
 
   @@index([userId])
   @@map("notifications")
@@ -404,6 +413,8 @@ model NotificationDelivery {
   channel        NotificationChannel
   status         DeliveryStatus      @default(PENDING)
   errorMessage   String?             @map("error_message")
+  openedAt       DateTime?           @map("opened_at")
+  clickedAt      DateTime?           @map("clicked_at")
   attempts       Int                 @default(0)
   lastAttemptAt  DateTime?           @map("last_attempt_at")
   createdAt      DateTime            @default(now()) @map("created_at")
@@ -417,6 +428,12 @@ enum NotificationChannel {
   SMS
   PUSH
   WEBSOCKET
+}
+
+enum NotificationStatus {
+  SCHEDULED
+  SENT
+  SKIPPED
 }
 
 enum DeliveryStatus {
