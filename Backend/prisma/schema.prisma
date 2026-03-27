@@ -294,9 +294,18 @@ model ProcessedEvent {
   abiVersion      String?  @map("abi_version")
   processedAt     DateTime @default(now()) @map("processed_at")
 
-  @@index([network, ledgerSeq])
   @@index([contractId, eventType])
   @@map("processed_events")
+}
+
+model LedgerHeader {
+  sequence  Int      @id
+  hash      String   @unique
+  prevHash  String   @map("prev_hash")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([sequence])
+  @@map("ledger_headers")
 }
 
 model ContractAbiRegistry {
