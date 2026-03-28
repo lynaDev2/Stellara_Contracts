@@ -56,6 +56,7 @@ import { DataResidencyModule } from './data-residency/data-residency.module';
 import { PredictiveMaintenanceModule } from './predictive-maintenance/predictive-maintenance.module';
 import { SecretsManagementModule } from './secrets-management/secrets-management.module';
 import { TransactionQueueModule } from './transaction-queue/transaction-queue.module';
+import { LiquidityAggregationModule } from './liquidity-aggregation/liquidity-aggregation.module';
 
 @Module({
   imports: [
@@ -132,6 +133,7 @@ import { TransactionQueueModule } from './transaction-queue/transaction-queue.mo
     DataResidencyModule,
     PredictiveMaintenanceModule,
     SecretsManagementModule,
+    LiquidityAggregationModule,
   ],
   controllers: [AppController, UserController, DocsController],
   providers: [AppService],
